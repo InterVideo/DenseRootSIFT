@@ -14,7 +14,10 @@ class DenseRootSIFT(object):
 		descriptors = np.array([], dtype=np.float32).reshape(0, 128)
 		for crop in self._crop_image(image, step_size, window_size):
 			crop = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-			descriptors = np.vstack([descriptors, self._detectAndCompute(crop)[1]])
+			tmp_descriptor = self._detectAndCompute(crop)[1]
+			if tmp_descriptor is None: 
+				continue 
+			descriptors = np.vstack([descriptors, tmp_descriptor])
 		return descriptors
 
 	def _detect(self, image):
